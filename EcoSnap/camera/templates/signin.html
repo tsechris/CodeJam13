@@ -6,6 +6,9 @@
     <title>Document</title>
 </head>
 <body>
+    <img src="https://cdn.discordapp.com/attachments/1175270205388226630/1175516912894099526/Capture-removebg-preview.png?ex=656b8470&is=65590f70&hm=4b23a97a1c6b9f278be8c5dbbbc7627fcdad1685de885dab9a2811d50c971ad2&" alt="" id="vanish" style="position: absolute; background-color: aliceblue;">
+    <h2 id="vanish">Hide me...</h2>
+
     <form method="POST">
         <label for="name">Name</label>
         <input type="text" name="name">
@@ -13,4 +16,36 @@
         <button type="submit">Login</button>
     </form>
 </body>
+
+<style>
+    
+    #vanish {
+        -moz-animation: cssAnimation 0s ease-in 3s forwards;
+        /* Firefox */
+        -webkit-animation: cssAnimation 0s ease-in 3s forwards;
+        /* Safari and Chrome */
+        -o-animation: cssAnimation 0s ease-in 3s forwards;
+        /* Opera */
+        animation: cssAnimation 0s ease-in 3s forwards;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+    }
+    @keyframes cssAnimation {
+        to {
+            width:0;
+            height:0;
+            overflow:hidden;
+        }
+    }
+    @-webkit-keyframes cssAnimation {
+        
+        to {
+
+            width:0;
+            height:0;
+            display:none;
+            visibility:hidden;
+        }
+    }
+    </style>
 </html>
