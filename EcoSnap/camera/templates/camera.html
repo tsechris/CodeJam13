@@ -34,9 +34,9 @@
 
     function takePicture() {
         var ctx = myCanvas.getContext('2d');
-        myCanvas.width = 256;
-        myCanvas.height = 256;
-        ctx.drawImage(myStream, 0, 0, 500, 400, 40, 40, 256, 256);
+        myCanvas.width = 500;
+        myCanvas.height = 400;
+        ctx.drawImage(myStream, 0, 0, 550, 400);
 
         img_link.value = myCanvas.toDataURL('image/png');
         let data = myCanvas.toDataURL('image/png');
@@ -48,13 +48,14 @@
         ctx.fillStyle = "black";
         ctx.fillRect(0, 0, myCanvas.width, myCanvas.height);
         myPhoto.setAttribute('src', myCanvas.toDataURL('image/png'));
+        img_link.value = '';
+
     }
 
     window.addEventListener('load', startup, false);
 
 </script>
 
-<a class="go-to-stats" href="{% url 'game:game' %}">Stats</a>
 
 <body>
     <!-- <h1>EcoSnap</h1> -->
@@ -62,6 +63,8 @@
 
     {% block content %}
     <div>
+<a class="go-to-stats" href="{% url 'game:game' %}">Stats</a>
+
         <div>
             <h2>Video Stream for {{name}}</h2>
             <!-- <button id="start">Stream</button> -->
