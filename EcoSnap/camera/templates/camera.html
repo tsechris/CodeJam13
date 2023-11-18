@@ -6,26 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
-<body>
-    <h1>EcoSnap</h1>
-    <div>
-        <div>
-            <h2>Video Stream</h2>
-            <button id="start">Stream</button>
-            <button id="capture" onclick="takePicture()">Picture</button>
-            <button onclick="clearPic()">Clear</button>
-            <video src="" id="myStream"></video>
-            <canvas style="visibility: hidden;" id="myCanvas"></canvas>
-        </div>
-        <form method="POST">
-            <!-- {% csrf_token %} bypassing it-->
-            <img id="myPhoto" src="" alt="The Pic" name="myPic">
-            <textarea name="img_link" id="img_link" cols="100" rows="50"></textarea>
-            <button type="submit">Check!</button>
-        </form>
-    </div>
-</body>
 <script>
 
     function startup() {
@@ -66,5 +46,30 @@
     window.addEventListener('load', startup, false);
 
 </script>
+
+<body>
+    <!-- <h1>EcoSnap</h1> -->
+    {% extends "base.html"%}
+
+    {% block content %}
+    <div>
+        <div>
+            <h2>Video Stream</h2>
+            <!-- <button id="start">Stream</button> -->
+            <button id="capture" onclick="takePicture()">Picture</button>
+            <button onclick="clearPic()">Clear</button>
+            <video src="" id="myStream"></video>
+            <canvas style="visibility: hidden;" id="myCanvas"></canvas>
+        </div>
+        <form method="POST">
+            <!-- {% csrf_token %} bypassing it-->
+            <img id="myPhoto" src="" alt="The Pic" name="myPic">
+            <textarea name="img_link" id="img_link" cols="100" rows="50"></textarea>
+            <button type="submit">Check!</button>
+        </form>
+    </div>
+    {% endblock %}
+
+</body>
 
 </html>
