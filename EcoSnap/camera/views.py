@@ -27,6 +27,11 @@ def camera(r):
     tmp = loader.get_template('camera.html')
     return HttpResponse(tmp.render({"name": userName}))
 
+def insights(r):
+    userName = r.GET['name']
+    tmp = loader.get_template('insights.html')
+    return HttpResponse(tmp.render({"name": userName}))
+
 @csrf_exempt
 def signin(r):
     if r.method == "POST":
@@ -47,6 +52,7 @@ def api(r):
         print(r2.text)
         
 
-        return render(r, "api.html")
+        return render(r, "api.html" , {"content": r2.text})
 
     return render(r, "api.html")
+
