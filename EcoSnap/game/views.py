@@ -6,10 +6,16 @@ from numpy import log10
 def game(requests):
     name = requests.GET['name']
     entry = RecycleStats.objects.filter(user=name)
-    user = entry.get(user=name)
+
+    if (bool(entry)):
+        user = entry.get(user=name)
+    else: #creates new entry in the table if new user
+        RecycleStats.objects.create(user=name)
+        entry = RecycleStats.objects.filter(user=name)
+        user = entry.get(user=name)
+
     total_recycled = user.glass + user.metal + user.plastic
     level = round((100*log10(user.xp/20 + 10) - 100), 2)
-
     glass_emission = user.glass * 302 # average CO2 saved from recycling a glass bottle is 302g
     metal_emission = user.metal * 99 # average CO2 save from recycling an aluminium can is 99g
     paper_emission = user.paper * 5 # average CO2 save from recycling paper is 5g
