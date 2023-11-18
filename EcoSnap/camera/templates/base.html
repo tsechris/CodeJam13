@@ -3,37 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>EcoSnap</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #5DB075;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        nav {
+            background-color: #5DB075;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .btn {
+            margin: 0 5px;
+        }
+
+        .container-max {
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #5DB075;
+        }
+    </style>
 </head>
 <body>
-  
     <div>
-        <h1 class="container-fluid text-center" style="background-color:#5DB075;">EcoSnap</h1>
+        <h1 class="container-fluid text-center">EcoSnap</h1>
     </div>
 
     <nav>
         {% block navbar %}
-        <a href="/home" class="btn btn-info">Home</a>
-        <a href="/" class="btn btn-info">Sign In</a>
+        <a href="/" class="btn btn-info">Log Out</a>
         <a href="/camera?name={{name}}" class="btn btn-info">Camera</a>
         <a href="/insights?name={{name}}" class="btn btn-info">Insights</a>
         {% endblock %}
-
     </nav>
 
-    <div class="container-max" style="text-align: center;">
+    <div class="container-max">
         {% block content %}
         {% if name %}
-        <h2> Hello {{name}}</h2>
+        <h2>Hello {{name}}</h2>
         {% else %}
         <h2>Welcome to EcoSnap</h2>
         {% endif %}
         {% endblock %}
     </div>
 </body>
-<style>
-
-</style>
 </html>
