@@ -4,8 +4,9 @@ from numpy import log10
 
 # Create your views here
 def game(requests):
-    entry = RecycleStats.objects.filter(user="test2")
-    user = entry.get(user="test2")
+    name = requests.GET['name']
+    entry = RecycleStats.objects.filter(user=name)
+    user = entry.get(user=name)
     total_recycled = user.glass + user.metal + user.plastic
     level = round((100*log10(user.xp/20 + 10) - 100), 2)
 
