@@ -16,9 +16,16 @@
         var myPhoto = document.getElementById("myPhoto");
         var img_link = document.getElementById("img_link");
 
-        navigator.mediaDevices.getUserMedia({ video: true })
+         // safari
+        // myStream.setAttribute('autoplay', '');
+        // myStream.setAttribute('muted', '');
+        // myStream.setAttribute('playsinline', '');
+                
+        navigator.mediaDevices.getUserMedia({ audio:false, video:{facingMode: 'environment'} })
             .then(function (stream) {
+               
                 myStream.srcObject = stream;
+
                 myStream.play();
             })
 
@@ -54,17 +61,23 @@
     {% block content %}
     <div>
         <div>
-            <h2>Video Stream</h2>
+            <h2>Video Stream for {{name}}</h2>
             <!-- <button id="start">Stream</button> -->
-            <button id="capture" onclick="takePicture()">Picture</button>
+            <button id="capture" onclick="takePicture()">Take a picture</button>
             <button onclick="clearPic()">Clear</button>
-            <video src="" id="myStream"></video>
+            <video src="" muted autoplay id="myStream"></video>
+            <!-- Mobile cam -->
+            <!-- <video src="" id="myStream"></video> -->
+
             <canvas style="visibility: hidden;" id="myCanvas"></canvas>
         </div>
         <form method="POST">
             <!-- {% csrf_token %} bypassing it-->
             <img id="myPhoto" src="" alt="The Pic" name="myPic">
+            <div>
             <textarea name="img_link" id="img_link" cols="100" rows="50"></textarea>
+
+            </div>
             <button type="submit">Check!</button>
         </form>
     </div>

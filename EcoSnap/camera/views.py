@@ -7,10 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def index(r):
+    print(r)
     return render(r, "base.html")
 
 @csrf_exempt
 def camera(r):
+    print("camera")
+    print(r.GET['name'])
+    userName = r.GET['name']
+
     if r.method == "POST":
         img_link = str(r.POST['img_link'])
         img_link = img_link[22:]
@@ -20,12 +25,12 @@ def camera(r):
 
 
     tmp = loader.get_template('camera.html')
-    return HttpResponse(tmp.render())
+    return HttpResponse(tmp.render({"name": userName}))
 
 @csrf_exempt
 def signin(r):
     if r.method == "POST":
-        print("hsdgjk")
+        print("Signed")
         name = str(r.POST['name'])
         return render(r, "base.html", {"name": name} )
 
