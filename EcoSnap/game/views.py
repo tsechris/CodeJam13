@@ -13,7 +13,7 @@ def game(requests):
     metal_emission = user.metal * 99 # average CO2 save from recycling an aluminium can is 99g
     paper_emission = user.paper * 5 # average CO2 save from recycling paper is 5g
     plastic_emission = user.plastic * 40 # average CO2 save from a plastic bottle is 41g
-    total_emission = glass_emission + metal_emission + paper_emission + plastic_emission; 
+    total_emission = (glass_emission + metal_emission + paper_emission + plastic_emission)/1000; 
 
     return render(requests, "game.html", {"plastic": user.plastic,
                                           "glass": user.glass,
