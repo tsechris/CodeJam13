@@ -37,7 +37,10 @@ def signin(r):
     if r.method == "POST":
         print("Signed")
         name = str(r.POST['name'])
-        return render(r, "base.html", {"name": name} )
+        tmp = loader.get_template('camera.html')
+        return HttpResponse(tmp.render({"name": name}))
+
+        # return render(r, "base.html", {"name": name} )
 
     return render(r, "signin.html")
 
