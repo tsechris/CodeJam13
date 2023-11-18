@@ -16,5 +16,8 @@ def game(requests):
                                           "trash": user.trash,
                                           "compost": user.compost,
                                           "daily_streak": user.daily_streak, 
-                                          "total_recycled": total_recycled
-                                          })
+                                          "total_recycled": total_recycled })
+
+
+def test(requests):
+    return HttpResponse("Hello World")
