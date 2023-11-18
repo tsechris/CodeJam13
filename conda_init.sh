@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if conda info --envs | grep -q base; then echo "base already exists"; else conda create --name codejam python==3.11 pip; fi
+if conda info --envs | grep -q codejam; then echo "base already exists"; else conda create --name codejam python==3.11 pip; fi
 
 eval "$(conda shell.bash hook)"
 
