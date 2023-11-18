@@ -16,5 +16,5 @@ class RecycleStats(models.Model):
 
 class History(models.Model):
     user = models.CharField(max_length=100)
-    day = models.DateField(default=date.today)
+    date = models.DateField(default=date.today)
     item = models.CharField(max_length=50)
