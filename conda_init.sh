@@ -6,8 +6,22 @@ eval "$(conda shell.bash hook)"
 
 conda activate codejam
 
+conda install cudatoolkit
+
 pip install numpy
 
 pip install torch
 
 pip install Django==4.2
+
+pip install opendatasets
+
+pip install ipykernel
+
+pip install pandas
+
+pip install torchvision
+
+pip install pathlib
+
+pip install Pillow
