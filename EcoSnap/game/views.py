@@ -7,7 +7,7 @@ def game(requests):
     entry = RecycleStats.objects.filter(user="test2")
     user = entry.get(user="test2")
     total_recycled = user.glass + user.metal + user.plastic
-    level = 100*log10(user.xp/20 + 10) - 100
+    level = round((100*log10(user.xp/20 + 10) - 100), 2)
 
     glass_emission = user.glass * 302 # average CO2 saved from recycling a glass bottle is 302g
     metal_emission = user.metal * 99 # average CO2 save from recycling an aluminium can is 99g
