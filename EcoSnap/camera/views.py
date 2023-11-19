@@ -61,11 +61,13 @@ def predictImage(imgStr, modelPath):
     return prediction[0].item()
 
 def getTrashType(prediction):
-    if prediction in [0, 2, 3, 4, 5, 6, 7, 9]:
-        return 'recyclable'
+    if prediction in [2, 4, 9]:
+        return "plastic, glass, metal recycling bin 🟡♻"
+    elif prediction in [3, 6]:
+        return "paper, cardboard recycling bin 🔵♻"
     if prediction == 1:
-        return 'compostable'
-    return 'waste'
+        return "compost bin 🟤🍂"
+    return "trash can ⚫🗑"
 
 @csrf_exempt
 def index(r):
@@ -83,16 +85,16 @@ def camera(r):
     # print(r.POST['name'])
 
     dictionary = {
-        0 : 'battery',
-        1 : 'food/biological',
-        2 : 'brown glass',
-        3 : 'cardboard',
-        4 : 'green glass',
-        5 : 'metal',
-        6 : 'higher quality paper',
-        7 : 'reusable plastic',
-        8 : 'nonreusable material',
-        9 : 'clear glass'
+        0 : 'battery 🔋',
+        1 : 'food/biological 🧬',
+        2 : 'brown glass 🟫 ',
+        3 : 'cardboard 📦',
+        4 : 'green glass 🟩',
+        5 : 'metal 🔧',
+        6 : 'higher quality paper 📃',
+        7 : 'reusable plastic 🔁',
+        8 : 'nonreusable material ❌',
+        9 : 'clear glass 🥛'
     }
 
     if r.method == "POST":
@@ -115,11 +117,13 @@ def camera(r):
 
         recyclable_status = ""
         if c == 1:
-            recyclable_status = "compostable"
+            recyclable_status = "compost bin 🟤🍂"
         elif c==8:
-            recyclable_status = "trash"
+            recyclable_status = "trash can ⚫🗑"
+        elif c==2 or c==4 or c==9:
+            recyclable_status = "plastic, glass, metal recycling bin 🟡♻"
         else:
-            recyclable_status = "recyclable"
+            recyclable_status = "paper, cardboard recycling bin 🔵♻"
 
         entry = RecycleStats.objects.filter(user=userName)
         if (bool(entry)):
