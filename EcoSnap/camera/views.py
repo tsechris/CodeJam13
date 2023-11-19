@@ -105,7 +105,7 @@ def camera(r):
     if r.method == "POST":
         img_link = str(r.POST['img_link'])
         img_link = img_link[22:]
-        path = pathlib.Path.cwd() / 'EcoSnap/camera/model_3.pt' #path change
+        path = pathlib.Path.cwd() / 'camera/model_3.pt' #path change
         c = predictImage(img_link, path)
         garbageType = getTrashType(c)
 
