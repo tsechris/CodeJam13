@@ -25,3 +25,5 @@ pip install plotvision
 pip install pathlib
 
 pip install opendatasets
+
+pip install plotly

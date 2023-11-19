@@ -60,6 +60,13 @@ def predictImage(imgStr, modelPath):
     _, prediction = torch.max(model(tensor), 1)
     return prediction[0]
 
+def getTrashType(prediction):
+    if prediction in [0, 2, 3, 4, 5, 6, 7, 9]:
+        return 'recyclable'
+    if prediction == 0:
+        return 'compostable'
+    return 'waste'
+
 @csrf_exempt
 def index(r):
     print(r)
@@ -85,12 +92,13 @@ def camera(r):
         img_link = img_link[22:]
         path = pathlib.Path.cwd() / 'camera/model_3.pt'
         c = predictImage(img_link, path)
+        garbageType = getTrashType(c)
 
         print("Classfier")
-        print(c)
+        print(garbageType)
 
         userName = r.POST['name']
-        return render(r, "base.html", {"name":userName})
+        return render(r, "result.html", {"name":userName, "garbageType":garbageType})
 
         recyclable_status = ""
         if c == 1:
