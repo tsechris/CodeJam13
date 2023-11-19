@@ -85,8 +85,12 @@ def camera(r):
         img_link = img_link[22:]
         path = pathlib.Path.cwd() / 'camera/model_3.pt'
         c = predictImage(img_link, path)
+
         print("Classfier")
-        print("id:", c)
+        print(c)
+
+        userName = r.POST['name']
+        return render(r, "base.html", {"name":userName})
 
         recyclable_status = ""
         if c == 1:
