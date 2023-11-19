@@ -1,5 +1,5 @@
 import pathlib
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.template import loader
 from django.http import HttpResponse
 from game.models import RecycleStats
@@ -83,7 +83,7 @@ def camera(r):
     if r.method == "POST":
         img_link = str(r.POST['img_link'])
         img_link = img_link[22:]
-        path = pathlib.Path.cwd() / 'camera/model_3.pt'
+        path = pathlib.Path.cwd() / 'EcoSnap/camera/model_3.pt' #path change
         c = predictImage(img_link, path)
 
         print("Classfier")
@@ -133,6 +133,7 @@ def signin(r):
         print("Signed")
         print(r.POST)
         name = str(r.POST['name'])
+        return redirect(f"/camera?name={name}", {"name": name})
         tmp = loader.get_template('camera.html')
         return HttpResponse(tmp.render({"name": name}))
 
