@@ -63,7 +63,7 @@ def predictImage(imgStr, modelPath):
 def getTrashType(prediction):
     if prediction in [0, 2, 3, 4, 5, 6, 7, 9]:
         return 'recyclable'
-    if prediction == 0:
+    if prediction == 1:
         return 'compostable'
     return 'waste'
 
