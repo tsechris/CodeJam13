@@ -1,3 +1,4 @@
+import pathlib
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
@@ -9,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 import torch
 from PIL import Image
+from .convert import base64toPIL
+
 import torchvision.transforms.v2 as v2
 import torch.nn as nn
 import torch.nn.functional as F
@@ -35,7 +38,7 @@ class CNN(nn.Module):
         x = self.fc2(x)
         return self.logSoftMax(x)
 
-def predictImage(imgPath, modelPath):
+def predictImage(imgStr, modelPath):
     transformer = v2.Compose([
     v2.ToImage(),
     v2.ToDtype(torch.uint8, scale=True),
@@ -43,15 +46,19 @@ def predictImage(imgPath, modelPath):
     v2.ToDtype(torch.float32, scale=True),  # Normalize expects float input
     v2.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
     ])
-    img = Image.open(imgPath).convert('RGB')
+    # img = Image.open(imgPath).convert('RGB')
+    img = base64toPIL(imgStr).convert('RGB')
     tensor = transformer(img)
+    padding = torch.zeros(size=(64, 3, 224, 224))
+    padding[0] = tensor
+    tensor = padding
 
     model = CNN()
-    model.load_state_dict(torch.load(modelPath))
+    model.load_state_dict(torch.load(modelPath, map_location=torch.device('cpu')))
     model.eval()
 
     _, prediction = torch.max(model(tensor), 1)
-    return prediction.item()
+    return prediction[0]
 
 @csrf_exempt
 def index(r):
@@ -76,10 +83,44 @@ def camera(r):
     if r.method == "POST":
         img_link = str(r.POST['img_link'])
         img_link = img_link[22:]
-        print(img_link)
-        userName = r.POST['name']
-        return render(r, "base.html", {"name":userName})
+        path = pathlib.Path.cwd() / 'camera/model_3.pt'
+        c = predictImage(img_link, path)
+        print("Classfier")
+        print("id:", c)
 
+        recyclable_status = ""
+        if c == 1:
+            recyclable_status = "compostable"
+        elif c==8:
+            recyclable_status = "trash"
+        else:
+            recyclable_status = "recyclable"
+
+        entry = RecycleStats.objects.filter(user=userName)
+        if (bool(entry)):
+            user = entry.get(user=userName)
+        else: #creates new entry in the table if new user
+            RecycleStats.objects.create(user=userName)
+            entry = RecycleStats.objects.filter(user=userName)
+            user = entry.get(user=userName)
+
+        #Updates the database based on the returned ID
+        if c==1: #compost
+            user.compost += 1 
+        elif c==2 or c==4 or c==9: #glass
+            user.glass += 1
+        elif c==3 or c==6: #paper
+            user.paper += 1
+        elif c==5: #metal
+            user.metal += 1
+        elif c==7: #plastic
+            user.plastic += 1
+        elif c==8: #trash
+            user.trash += 1
+        user.save() #save to database
+
+        userName = r.POST['name']
+        return render(r, "base.html", {"name":userName, "recyclable_status": recyclable_status})
 
 
     tmp = loader.get_template('camera.html')
