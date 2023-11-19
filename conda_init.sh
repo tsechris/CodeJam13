@@ -11,3 +11,9 @@ pip install numpy
 pip install torch
 
 pip install Django==4.2
+
+pip install requests
+
+pip install plotly
+
+pip install plotly-express

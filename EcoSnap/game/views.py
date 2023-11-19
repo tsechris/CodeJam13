@@ -1,6 +1,8 @@
 from django.shortcuts import render, HttpResponse
-from .models import RecycleStats
+from .models import RecycleStats, History
 from numpy import log10
+from copy import copy
+import plotly.express as px
 
 # Create your views here
 def game(requests):
@@ -35,6 +37,27 @@ def game(requests):
                                           "level": level,
                                           "total_emission": total_emission})
 
-
 def test(requests):
-    return HttpResponse("Hello World")
+    a = get_total_recycled_by_day()
+    return render(requests, "test.html", {"test": History.objects.filter(user = "user2"), "a": a})
+
+
+def get_total_recycled_by_day():
+    data = History.objects.filter(user = "user2")
+    day_counter = 0
+    accumulator = {}
+    material_counter = {"plastic": 0, "metal": 0, "paper": 0, "glass": 0, "compost": 0, "trash": 0}
+
+    for entry in data.iterator():
+        if not (entry.item in material_counter.keys()):
+            continue
+
+        if accumulator.get(entry.date.isoformat()) != None:
+            value = accumulator[entry.date.isoformat()]
+            value[entry.item] += 1
+        else:
+            accumulator[entry.date.isoformat()] = copy(material_counter)
+            value = accumulator[entry.date.isoformat()]
+            value[entry.item] += 1
+
+    return accumulator
