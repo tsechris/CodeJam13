@@ -11,3 +11,5 @@ pip install numpy
 pip install torch
 
 pip install Django==4.2
+
+pip install kaleido
