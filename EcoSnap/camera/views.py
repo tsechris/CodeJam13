@@ -1,3 +1,4 @@
+import pathlib
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
@@ -7,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 import torch
 from PIL import Image
+from .convert import base64toPIL
+
 import torchvision.transforms.v2 as v2
 import torch.nn as nn
 import torch.nn.functional as F
@@ -33,7 +36,7 @@ class CNN(nn.Module):
         x = self.fc2(x)
         return self.logSoftMax(x)
 
-def predictImage(imgPath, modelPath):
+def predictImage(imgStr, modelPath):
     transformer = v2.Compose([
     v2.ToImage(),
     v2.ToDtype(torch.uint8, scale=True),
@@ -41,15 +44,19 @@ def predictImage(imgPath, modelPath):
     v2.ToDtype(torch.float32, scale=True),  # Normalize expects float input
     v2.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
     ])
-    img = Image.open(imgPath).convert('RGB')
+    # img = Image.open(imgPath).convert('RGB')
+    img = base64toPIL(imgStr).convert('RGB')
     tensor = transformer(img)
+    padding = torch.zeros(size=(64, 3, 224, 224))
+    padding[0] = tensor
+    tensor = padding
 
     model = CNN()
-    model.load_state_dict(torch.load(modelPath))
+    model.load_state_dict(torch.load(modelPath, map_location=torch.device('cpu')))
     model.eval()
 
     _, prediction = torch.max(model(tensor), 1)
-    return prediction.item()
+    return prediction[0]
 
 @csrf_exempt
 def index(r):
@@ -68,7 +75,12 @@ def camera(r):
     if r.method == "POST":
         img_link = str(r.POST['img_link'])
         img_link = img_link[22:]
-        print(img_link)
+        path = pathlib.Path.cwd() / 'camera/model_3.pt'
+        c = predictImage(img_link, path)
+
+        print("Classfier")
+        print(c)
+
         userName = r.POST['name']
         return render(r, "base.html", {"name":userName})
 
