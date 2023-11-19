@@ -18,3 +18,4 @@ class History(models.Model):
     user = models.CharField(max_length=100)
     date = models.DateField(default=date.today)
     item = models.CharField(max_length=50)
+    

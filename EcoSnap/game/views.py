@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from .models import RecycleStats, History
+import plotly.graph_objects as go
 from numpy import log10
 from copy import copy 
 
@@ -32,11 +33,25 @@ def game(requests):
 
 def test(requests):
     a = get_total_recycled_by_day()
+    entry = RecycleStats.objects.filter(user="test2")
+    user = entry.get(user="test2")
+
+    generate_donut(user)
+
     return render(requests, "test.html", {"test": History.objects.filter(user = "user2"), "a": a})
 
 
+def generate_donut(user):
+    labels = ['Plastic','Metal','Glass','Paper', 'Compost', 'Trash']
+    values = [user.plastic, user.metal, user.glass, user.paper, user.compost, user.trash]
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
+    fig.update_traces(textposition='inside')
+    fig.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
+    fig.write_image('./game/static/donut.png')
+
+
 def get_total_recycled_by_day():
-    data = History.objects.filter(user = "user2")
+    data = History.objects.filter(user = "test2")
     day_counter = 0
     accumulator = {}
     material_counter = {"plastic": 0, "metal": 0, "paper": 0, "glass": 0, "compost": 0, "trash": 0}
@@ -44,7 +59,6 @@ def get_total_recycled_by_day():
     for entry in data.iterator():
         if not (entry.item in material_counter.keys()):
             continue
-
         if accumulator.get(entry.date.isoformat()) != None:
             value = accumulator[entry.date.isoformat()]
             value[entry.item] += 1
