@@ -13,3 +13,9 @@ pip install torch
 pip install Django==4.2
 
 pip install kaleido
+
+pip install requests
+
+pip install plotpy
+
+pip install plotvision

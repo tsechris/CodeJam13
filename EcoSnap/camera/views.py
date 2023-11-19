@@ -2,6 +2,8 @@ import pathlib
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
+from game.models import RecycleStats
+import plotly.graph_objects as go
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -61,12 +63,18 @@ def predictImage(imgStr, modelPath):
 @csrf_exempt
 def index(r):
     print(r)
+    if r.method == "POST":
+        userName = r.POST['name']
+    if r.method == "GET":
+        userName = r.GET['name']
+
     return render(r, "base.html")
 
 @csrf_exempt
 def camera(r):
     print("camera")
     # print(r.POST['name'])
+
     if r.method == "POST":
         userName = r.POST['name']
     if r.method == "GET":
@@ -91,8 +99,33 @@ def camera(r):
 
 def insights(r):
     userName = r.GET['name']
-    tmp = loader.get_template('insights.html')
-    return HttpResponse(tmp.render({"name": userName}))
+    
+    entry = RecycleStats.objects.filter(user=userName)
+    if (bool(entry)):
+        user = entry.get(user=userName)
+    else: #creates new entry in the table if new user
+        RecycleStats.objects.create(user=userName)
+        entry = RecycleStats.objects.filter(user=userName)
+        user = entry.get(user=userName)
+
+    labels = ['Plastic','Metal','Glass','Paper', 'Compost', 'Trash']
+    values = [user.plastic, user.metal, user.glass, user.paper, user.compost, user.trash]
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
+    fig.update_traces(textposition='inside')
+    fig.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
+
+    glass_emission = user.glass * 302 # average CO2 saved from recycling a glass bottle is 302g
+    metal_emission = user.metal * 99 # average CO2 save from recycling an aluminium can is 99g
+    paper_emission = user.paper * 5 # average CO2 save from recycling paper is 5g
+    plastic_emission = user.plastic * 40 # average CO2 save from a plastic bottle is 41g
+    total_emission = (glass_emission + metal_emission + paper_emission + plastic_emission)/1000; 
+
+    fig.write_image('./camera/static/donut.png')
+
+    #tmp = loader.get_template('insights.html')
+    #return HttpResponse(tmp.render({"name": userName}))
+    #return HttpResponse(userName)
+    return render(r, "insights.html", {"name": userName, "total_emission": total_emission})
 
 @csrf_exempt
 def signin(r):

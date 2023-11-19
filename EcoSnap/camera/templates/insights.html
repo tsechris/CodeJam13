@@ -9,11 +9,19 @@
     {% extends "base.html" %}
 
     {% block content %}
-    <div class="animate__animated animate__bounce"> HeatMap</div>
+    <h3>Garbage Distribution</h3>
+    {% load static %}
+    <img src={% static "donut.png" %} alt="donut" width="700" height="500">
+    <br>
+    <br>
+    <h2>Total CO2 Saved: {{total_emission}} kg</h2>
+    
+    <!--<div class="animate__animated animate__bounce"> HeatMap</div>
     <div>Graph</div>
     <div>Points</div>
-    <div>Streak</div>
+    <div>Streak</div>-->
     {% endblock %}
+
 </body>
 </html>
 
