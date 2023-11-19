@@ -3,49 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login Page</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #5DB075;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4d8c62;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <img src="https://cdn.discordapp.com/attachments/1175270205388226630/1175516912894099526/Capture-removebg-preview.png?ex=656b8470&is=65590f70&hm=4b23a97a1c6b9f278be8c5dbbbc7627fcdad1685de885dab9a2811d50c971ad2&" alt="" id="vanish" style="position: absolute; background-color: aliceblue;">
-    <h2 id="vanish">Hide me...</h2>
-
+    <img src="https://cdn.discordapp.com/attachments/1175270205388226630/1175516912894099526/Capture-removebg-preview.png?ex=656b8470&is=65590f70&hm=4b23a97a1c6b9f278be8c5dbbbc7627fcdad1685de885dab9a2811d50c971ad2&" alt="Logo">
+    
     <form method="POST">
         <label for="name">Name</label>
-        <input type="text" name="name">
-        <!-- <input type="email" name="email"> -->
+        <input type="text" name="name" required>
+        
+        <!-- Fake Password Box -->
+        <label for="password">Password</label>
+        <input type="password" name="password">
+
         <button type="submit">Login</button>
     </form>
+
 </body>
-
-<style>
-    
-    #vanish {
-        -moz-animation: cssAnimation 0s ease-in 3s forwards;
-        /* Firefox */
-        -webkit-animation: cssAnimation 0s ease-in 3s forwards;
-        /* Safari and Chrome */
-        -o-animation: cssAnimation 0s ease-in 3s forwards;
-        /* Opera */
-        animation: cssAnimation 0s ease-in 3s forwards;
-        -webkit-animation-fill-mode: forwards;
-        animation-fill-mode: forwards;
-    }
-    @keyframes cssAnimation {
-        to {
-            width:0;
-            height:0;
-            overflow:hidden;
-        }
-    }
-    @-webkit-keyframes cssAnimation {
-        
-        to {
-
-            width:0;
-            height:0;
-            display:none;
-            visibility:hidden;
-        }
-    }
-    </style>
 </html>
