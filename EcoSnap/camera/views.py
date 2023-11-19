@@ -109,6 +109,36 @@ def camera(r):
 
         print("Classfier")
         print(garbageType)
+        print(userName)
+
+        entry = RecycleStats.objects.filter(user=userName)
+        if (bool(entry)):
+            user = entry.get(user=userName)
+        else: #creates new entry in the table if new user
+            RecycleStats.objects.create(user=userName)
+            entry = RecycleStats.objects.filter(user=userName)
+            user = entry.get(user=userName)
+
+        #Updates the database based on the returned ID
+        if c==1: #compost
+            user.compost += 1
+            user.xp += 2
+        elif c==2 or c==4 or c==9: #glass
+            user.glass += 1
+            user.xp += 3
+        elif c==3 or c==6: #paper
+            user.paper += 1
+            user.xp += 3
+        elif c==5: #metal
+            user.metal += 1
+            user.xp += 3
+        elif c==7: #plastic
+            user.plastic += 1
+            user.xp += 3
+        elif c==8: #trash
+            user.trash += 1
+            user.xp += 1
+        user.save() #save to database
 
         userName = r.POST['name']
         return render(r, "result.html", {"name":userName, "material":dictionary[c], "garbageType":garbageType})
