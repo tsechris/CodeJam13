@@ -1,18 +1,51 @@
-<h1> Stats </h1>
-<ul>
-    <li>User: {{user}}</li>
-    <li>XP: {{xp}}</li>
-    <li>Level: {{level}} </li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats Page</title>
 
-    <li>Trash: {{trash}}</li>
-    <li>Compost: {{compost}}</li>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
 
-    <li>Plastic Amount: {{plastic}}</li>
-    <li>Glass Amount: {{glass}}</li>
-    <li>Metal Amount: {{metal}}</li>
-    <li>Total Recycled: {{total_recycled}} </li>
-    <li>CO2 Saved: {{total_emission}} kg of CO2</li>
+        h2 {
+            text-align: center;
+            color: #333;
+        }
 
-    <li>Daily Streak: {{daily_streak}}</li>
+        h5 {
+            margin-bottom: 5px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    {% extends "base.html" %}
 
-</ul>
+    {% block content %}
+        <h2>Stats</h2>
+        <h5>User: {{user}}</h5>
+        <h5>XP: {{xp}}</h5>
+        <h5>Level: {{level}}</h5>
+
+        <br>
+
+        <h5>Trash Items: {{trash}}</h5>
+        <h5>Compost Items: {{compost}}</h5>
+
+        <br>
+
+        <h5>Plastic Items: {{plastic}}</h5>
+        <h5>Glass Items: {{glass}}</h5>
+        <h5>Metal Items: {{metal}}</h5>
+        <h5>Paper Items: {{paper}}</h5>
+        <h5>Total Recycled: {{total_recycled}}</h5>
+
+        <br>
+    {% endblock %}
+</body>
+</html>
