@@ -9,11 +9,16 @@
     {% extends "base.html" %}
 
     {% block content %}
+    <h3>Garbage Distribution</h3>
+    {% load static %}
+    <img src={% static "donut.png" %} alt="donut" width="700" height="500">
+    <br>
     <div class="animate__animated animate__bounce"> HeatMap</div>
     <div>Graph</div>
     <div>Points</div>
     <div>Streak</div>
     {% endblock %}
+
 </body>
 </html>
 
