@@ -14,14 +14,17 @@ def index(r):
 def camera(r):
     print("camera")
     # print(r.POST['name'])
-    userName = r.POST['name']
+    if r.method == "POST":
+        userName = r.POST['name']
+    if r.method == "GET":
+        userName = r.GET['name']
 
     if r.method == "POST":
         img_link = str(r.POST['img_link'])
         img_link = img_link[22:]
         print(img_link)
         userName = r.POST['name']
-        return render(r, "base.html")
+        return render(r, "base.html", {"name":userName})
 
 
 
