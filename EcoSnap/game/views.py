@@ -16,7 +16,7 @@ def game(requests):
         user = entry.get(user=name)
     
     user.xp = (user.glass + user.metal + user.paper + user.plastic)*3 + user.compost*2 + user.trash
-    total_recycled = user.glass + user.metal + user.plastic
+    total_recycled = user.glass + user.metal + user.plastic + user.paper
     level = round((100*log10(user.xp/20 + 10) - 100), 2)
     xp_percentage = round((100*log10(user.xp/20 + 10) - 100), 2) - round((100*log10(user.xp/20 + 10) - 100), 0)
     glass_emission = user.glass * 302 # average CO2 saved from recycling a glass bottle is 302g
