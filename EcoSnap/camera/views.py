@@ -13,13 +13,14 @@ def index(r):
 @csrf_exempt
 def camera(r):
     print("camera")
-    print(r.GET['name'])
-    userName = r.GET['name']
+    # print(r.POST['name'])
+    userName = r.POST['name']
 
     if r.method == "POST":
         img_link = str(r.POST['img_link'])
         img_link = img_link[22:]
         print(img_link)
+        userName = r.POST['name']
         return render(r, "base.html")
 
 
@@ -36,6 +37,7 @@ def insights(r):
 def signin(r):
     if r.method == "POST":
         print("Signed")
+        print(r.POST)
         name = str(r.POST['name'])
         tmp = loader.get_template('camera.html')
         return HttpResponse(tmp.render({"name": name}))
