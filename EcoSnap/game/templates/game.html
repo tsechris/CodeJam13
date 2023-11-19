@@ -3,23 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats Page</title>
+    <title>Game Stats</title>
 
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Comic Sans MS', cursive; /* Fun and playful font */
+            background-color: #ffd700; /* Gold background color */
+            color: #2c3e50; /* Dark blue text color */
             margin: 20px;
         }
 
         h2 {
             text-align: center;
-            color: #333;
+
         }
 
         h5 {
             margin-bottom: 5px;
-            color: #555;
+            color: #c0392b; /* Red text color for a playful touch */
+        }
+
+        /* Add some spacing between stats */
+        h5 + h5 {
+            margin-top: 8px;
+        }
+
+        /* Style the block containing recycled items */
+        .recycled-items {
+            border-top: 2px solid #27ae60; /* Green border for a game-like touch */
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        /* Style the total recycled item separately for emphasis */
+        .total-recycled {
+            font-weight: bold;
+            color: #27ae60; /* Green color for emphasis */
         }
     </style>
 </head>
@@ -27,24 +46,33 @@
     {% extends "base.html" %}
 
     {% block content %}
-        <h2>Stats</h2>
-        <h5>User: {{user}}</h5>
+        <h2>Game Stats 🎮</h2> <!-- Added a game controller emoji for fun -->
+        <h5>Player: {{user}}</h5> <!-- Changed "User" to "Player" for a gaming theme -->
         <h5>XP: {{xp}}</h5>
         <h5>Level: {{level}}</h5>
 
+        <!-- Add some spacing -->
         <br>
 
-        <h5>Trash Items: {{trash}}</h5>
-        <h5>Compost Items: {{compost}}</h5>
+        <!-- Group the trash and compost items together -->
+        <div class="recycled-items">
+            <h5>Trash Items 🗑️: {{trash}}</h5> <!-- Added a trash can emoji -->
+            <h5>Compost Items 🍂: {{compost}}</h5> <!-- Added a leaf emoji -->
+        </div>
 
+        <!-- Add some spacing -->
         <br>
 
-        <h5>Plastic Items: {{plastic}}</h5>
-        <h5>Glass Items: {{glass}}</h5>
-        <h5>Metal Items: {{metal}}</h5>
-        <h5>Paper Items: {{paper}}</h5>
-        <h5>Total Recycled: {{total_recycled}}</h5>
+        <!-- Group the recycled items by material -->
+        <h5>Plastic Items 🌍: {{plastic}}</h5> <!-- Added an Earth emoji -->
+        <h5>Glass Items 🥃: {{glass}}</h5> <!-- Added a glass emoji -->
+        <h5>Metal Items 🔧: {{metal}}</h5> <!-- Added a wrench emoji -->
+        <h5>Paper Items 📄: {{paper}}</h5> <!-- Added a document emoji -->
 
+        <!-- Highlight the total recycled item -->
+        <h5 class="total-recycled">Total Recycled ♻️: {{total_recycled}}</h5> <!-- Added a recycling emoji -->
+
+        <!-- Add some spacing -->
         <br>
     {% endblock %}
 </body>
