@@ -101,12 +101,19 @@ def insights(r):
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
     fig.update_traces(textposition='inside')
     fig.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
+
+    glass_emission = user.glass * 302 # average CO2 saved from recycling a glass bottle is 302g
+    metal_emission = user.metal * 99 # average CO2 save from recycling an aluminium can is 99g
+    paper_emission = user.paper * 5 # average CO2 save from recycling paper is 5g
+    plastic_emission = user.plastic * 40 # average CO2 save from a plastic bottle is 41g
+    total_emission = (glass_emission + metal_emission + paper_emission + plastic_emission)/1000; 
+
     fig.write_image('./camera/static/donut.png')
 
     #tmp = loader.get_template('insights.html')
     #return HttpResponse(tmp.render({"name": userName}))
     #return HttpResponse(userName)
-    return render(r, "insights.html", {"name": userName})
+    return render(r, "insights.html", {"name": userName, "total_emission": total_emission})
 
 @csrf_exempt
 def signin(r):
