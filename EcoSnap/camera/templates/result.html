@@ -6,6 +6,7 @@
     <title>EcoSnap</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-aL3+g9N0aLu8+ql4MpBrPV4fPyhZZh4dBFtO+RdFqHH4jyl1K7YZSd6sX+Kr5Ieh" crossorigin="anonymous">
     <style>
         body {
             background-color: #f0f0f0;
@@ -55,6 +56,8 @@
 
         h2 {
             color: #5DB075;
+            /* Add animations */
+            animation: fadeInUp 1s ease;
         }
 
         /* Additional Styling */
@@ -80,6 +83,12 @@
         .container-max {
             max-width: 800px;
             margin: 0 auto;
+        }
+
+        /* Add hover effect on h2 */
+        h2:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
         }
     </style>
 </head>
@@ -116,11 +125,11 @@
     <div class="container-max">
         {% block content %}
         {% if name %}
-        <h2>Hello {{name}}!</h2>
+        <h2 class="animate__animated animate__fadeInUp">Hello {{name}}!</h2>
         {% else %}
-        <h2>Welcome to EcoSnap</h2>
+        <h2 class="animate__animated animate__fadeInUp">Welcome to EcoSnap</h2>
         {% endif %}
-        <h2>That item is of {{material}}, so it is {{garbageType}}!</h2>
+        <h2 class="animate__animated animate__fadeInUp">That item is made of {{material}}, so it belongs to the {{garbageType}}! {% if garbageType == 'Recyclable' %}<i class="fas fa-recycle"></i>{% endif %}{% if garbageType == 'Compostable' %}<i class="fas fa-seedling"></i>{% endif %}{% if garbageType == 'Non-Recyclable' %}<i class="fas fa-trash-alt"></i>{% endif %}</h2>
         {% endblock %}
     </div>
 
