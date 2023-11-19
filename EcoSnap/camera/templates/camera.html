@@ -78,8 +78,8 @@
             <!-- {% csrf_token %} bypassing it-->
             <img id="myPhoto" src="" alt="The Pic" name="myPic">
             <div>
-            <input type="text" name="name" value="{{name}}">
-            <textarea name="img_link" id="img_link" cols="100" rows="50"></textarea>
+            <input type="text" name="name" value="{{name}}" style="display: none;">
+            <textarea name="img_link" id="img_link" cols="100" rows="50" style="display: none;"></textarea>
             <!-- <textarea name="name" id="name" cols="100" rows="50">{{name}}</textarea> -->
             </div>
             <button type="submit">Check!</button>

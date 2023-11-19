@@ -61,7 +61,7 @@ def predictImage(imgStr, modelPath):
     return prediction[0].item()
 
 def getTrashType(prediction):
-    if prediction in [2, 4, 9]:
+    if prediction in [0, 2, 4, 9, 7]:
         return "plastic, glass, metal recycling bin 🟡♻"
     elif prediction in [3, 6]:
         return "paper, cardboard recycling bin 🔵♻"
