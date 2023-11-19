@@ -14,6 +14,7 @@ Our webapp helps people figure out if their trash is recyclable or compostable. 
 > 4. ???
 > 5. You just helped the planet!
 
+Note: If you want to host the webapp yourself you have to run the **conda_init.sh** script
 ---
 ### Creation Process
 
