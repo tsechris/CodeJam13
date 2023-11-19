@@ -61,12 +61,14 @@ def predictImage(imgStr, modelPath):
     return prediction[0].item()
 
 def getTrashType(prediction):
-    if prediction in [0, 2, 4, 5, 9, 7]:
+    if prediction in [2, 4, 5, 9, 7]:
         return "plastic, glass, metal recycling bin 🟡♻"
     elif prediction in [3, 6]:
         return "paper, cardboard recycling bin 🔵♻"
-    if prediction == 1:
+    elif prediction == 1:
         return "compost bin 🟤🍂"
+    elif prediction == 0:
+        return "specialized drop off point 🔋♻" 
     return "trash can ⚫🗑"
 
 @csrf_exempt
