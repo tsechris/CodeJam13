@@ -14,8 +14,9 @@ def game(requests):
         RecycleStats.objects.create(user=name)
         entry = RecycleStats.objects.filter(user=name)
         user = entry.get(user=name)
-
-    total_recycled = user.glass + user.metal + user.plastic
+    
+    user.xp = (user.glass + user.metal + user.paper + user.plastic)*3 + user.compost*2 + user.trash
+    total_recycled = user.glass + user.metal + user.plastic + user.paper
     level = round((100*log10(user.xp/20 + 10) - 100), 2)
     xp_percentage = round((100*log10(user.xp/20 + 10) - 100), 2) - round((100*log10(user.xp/20 + 10) - 100), 0)
     glass_emission = user.glass * 302 # average CO2 saved from recycling a glass bottle is 302g
@@ -23,6 +24,7 @@ def game(requests):
     paper_emission = user.paper * 5 # average CO2 save from recycling paper is 5g
     plastic_emission = user.plastic * 40 # average CO2 save from a plastic bottle is 41g
     total_emission = (glass_emission + metal_emission + paper_emission + plastic_emission)/1000; 
+    user.save()
 
     return render(requests, "game.html", {"plastic": user.plastic,
                                           "glass": user.glass,

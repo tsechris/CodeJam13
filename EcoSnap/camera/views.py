@@ -58,7 +58,16 @@ def predictImage(imgStr, modelPath):
     model.eval()
 
     _, prediction = torch.max(model(tensor), 1)
-    return prediction[0]
+    return prediction[0].item()
+
+def getTrashType(prediction):
+    if prediction in [2, 4, 9]:
+        return "plastic, glass, metal recycling bin 🟡♻"
+    elif prediction in [3, 6]:
+        return "paper, cardboard recycling bin 🔵♻"
+    if prediction == 1:
+        return "compost bin 🟤🍂"
+    return "trash can ⚫🗑"
 
 @csrf_exempt
 def index(r):
@@ -75,6 +84,19 @@ def camera(r):
     print("camera")
     # print(r.POST['name'])
 
+    dictionary = {
+        0 : 'battery 🔋',
+        1 : 'food/biological 🧬',
+        2 : 'brown glass 🟫 ',
+        3 : 'cardboard 📦',
+        4 : 'green glass 🟩',
+        5 : 'metal 🔧',
+        6 : 'higher quality paper 📃',
+        7 : 'reusable plastic 🔁',
+        8 : 'nonreusable material ❌',
+        9 : 'clear glass 🥛'
+    }
+
     if r.method == "POST":
         userName = r.POST['name']
     if r.method == "GET":
@@ -85,13 +107,79 @@ def camera(r):
         img_link = img_link[22:]
         path = pathlib.Path.cwd() / 'EcoSnap/camera/model_3.pt' #path change
         c = predictImage(img_link, path)
+        garbageType = getTrashType(c)
 
         print("Classfier")
-        print(c)
+        print(garbageType)
+        print(userName)
+
+        entry = RecycleStats.objects.filter(user=userName)
+        if (bool(entry)):
+            user = entry.get(user=userName)
+        else: #creates new entry in the table if new user
+            RecycleStats.objects.create(user=userName)
+            entry = RecycleStats.objects.filter(user=userName)
+            user = entry.get(user=userName)
+
+        #Updates the database based on the returned ID
+        if c==1: #compost
+            user.compost += 1
+            user.xp += 2
+        elif c==2 or c==4 or c==9: #glass
+            user.glass += 1
+            user.xp += 3
+        elif c==3 or c==6: #paper
+            user.paper += 1
+            user.xp += 3
+        elif c==5: #metal
+            user.metal += 1
+            user.xp += 3
+        elif c==7: #plastic
+            user.plastic += 1
+            user.xp += 3
+        elif c==8: #trash
+            user.trash += 1
+            user.xp += 1
+        user.save() #save to database
 
         userName = r.POST['name']
-        return render(r, "base.html", {"name":userName})
+        return render(r, "result.html", {"name":userName, "material":dictionary[c], "garbageType":garbageType})
 
+        recyclable_status = ""
+        if c == 1:
+            recyclable_status = "compost bin 🟤🍂"
+        elif c==8:
+            recyclable_status = "trash can ⚫🗑"
+        elif c==2 or c==4 or c==9:
+            recyclable_status = "plastic, glass, metal recycling bin 🟡♻"
+        else:
+            recyclable_status = "paper, cardboard recycling bin 🔵♻"
+
+        entry = RecycleStats.objects.filter(user=userName)
+        if (bool(entry)):
+            user = entry.get(user=userName)
+        else: #creates new entry in the table if new user
+            RecycleStats.objects.create(user=userName)
+            entry = RecycleStats.objects.filter(user=userName)
+            user = entry.get(user=userName)
+
+        #Updates the database based on the returned ID
+        if c==1: #compost
+            user.compost += 1 
+        elif c==2 or c==4 or c==9: #glass
+            user.glass += 1
+        elif c==3 or c==6: #paper
+            user.paper += 1
+        elif c==5: #metal
+            user.metal += 1
+        elif c==7: #plastic
+            user.plastic += 1
+        elif c==8: #trash
+            user.trash += 1
+        user.save() #save to database
+
+        userName = r.POST['name']
+        return render(r, "base.html", {"name":userName, "recyclable_status": recyclable_status})
 
 
     tmp = loader.get_template('camera.html')
