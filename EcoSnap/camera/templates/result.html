@@ -117,10 +117,10 @@
         {% block content %}
         {% if name %}
         <h2>Hello {{name}}!</h2>
-        <h2>That item is {{garbageType}}!</h2>
         {% else %}
         <h2>Welcome to EcoSnap</h2>
         {% endif %}
+        <h2>That item is of {{material}}, so it is {{garbageType}}!</h2>
         {% endblock %}
     </div>
 

@@ -58,7 +58,7 @@ def predictImage(imgStr, modelPath):
     model.eval()
 
     _, prediction = torch.max(model(tensor), 1)
-    return prediction[0]
+    return prediction[0].item()
 
 def getTrashType(prediction):
     if prediction in [0, 2, 3, 4, 5, 6, 7, 9]:
@@ -82,6 +82,19 @@ def camera(r):
     print("camera")
     # print(r.POST['name'])
 
+    dictionary = {
+        0 : 'battery',
+        1 : 'food/biological',
+        2 : 'brown glass',
+        3 : 'cardboard',
+        4 : 'green glass',
+        5 : 'metal',
+        6 : 'higher quality paper',
+        7 : 'reusable plastic',
+        8 : 'nonreusable material',
+        9 : 'clear glass'
+    }
+
     if r.method == "POST":
         userName = r.POST['name']
     if r.method == "GET":
@@ -98,7 +111,7 @@ def camera(r):
         print(garbageType)
 
         userName = r.POST['name']
-        return render(r, "result.html", {"name":userName, "garbageType":garbageType})
+        return render(r, "result.html", {"name":userName, "material":dictionary[c], "garbageType":garbageType})
 
         recyclable_status = ""
         if c == 1:
